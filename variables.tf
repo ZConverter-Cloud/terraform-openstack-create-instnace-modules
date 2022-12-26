@@ -15,22 +15,6 @@ variable "cloud_platform" {
   type = string
 }
 
-variable "auth_url" {
-  type = string
-}
-
-variable "application_credential_name" {
-  type = string
-}
-
-variable "application_credential_id" {
-  type = string
-}
-
-variable "application_credential_secret" {
-  type = string
-}
-
 variable "region" {
   type = string
 }
