@@ -1,7 +1,3 @@
-
-
-
-
 # terraform-openstack-create-instnace-modules
 
 > Before You Begin
@@ -81,7 +77,7 @@ Prepare your environment for authenticating and running your Terraform scripts. 
    * **application_credential_secret**
 	   - The secret of an application credential to authenticate with.
    
-![Account User](https://raw.githubusercontent.com/ZConverter-samples/terraform-openstack-create-instnace-modules/master/images/credential_info.png)
+	![Account User](https://raw.githubusercontent.com/ZConverter-samples/terraform-openstack-create-instnace-modules/master/images/credential_info.png)
 
 ##  Start Terraform
 
@@ -90,75 +86,75 @@ Prepare your environment for authenticating and running your Terraform scripts. 
 	```
 	#Define required providers
 	terraform {
-		required_version  =  ">= 1.3.0"
-		required_providers {
-			openstack  =  {
-				source = "terraform-provider-openstack/openstack"
-				version = "1.48.0"
-			}
-		}
+       required_version  =  ">= 1.3.0"
+	   required_providers {
+	      openstack  =  {
+	         source = "terraform-provider-openstack/openstack"
+			 version = "1.48.0"
+          }
+	   }
 	}
 
 	#Configure the OpenStack Provider
 	provider  "openstack" {
-		user_name  = var.terraform_data.provider.user_name
-		auth_url  = var.terraform_data.provider.auth_url
-		application_credential_name  = var.terraform_data.provider.application_credential_name
-		application_credential_id  = var.terraform_data.provider.application_credential_id
-		application_credential_secret  = var.terraform_data.provider.application_credential_secret
-		region  = var.terraform_data.provider.region
+	   user_name  = var.terraform_data.provider.user_name
+	   auth_url  = var.terraform_data.provider.auth_url
+	   application_credential_name  = var.terraform_data.provider.application_credential_name
+	   application_credential_id  = var.terraform_data.provider.application_credential_id
+	   application_credential_secret  = var.terraform_data.provider.application_credential_secret
+	   region  = var.terraform_data.provider.region
 	}
 	
 	#variable
 	variable  "terraform_data" {
-		type  =  object({
-			provider = object({
-				auth_url = string
-				application_credential_name = string
-				application_credential_id = string
-				application_credential_secret = string
-				region = string
-			})
-			vm_info = object({
-				vm_name = string
-				OS_name = string
-				OS_boot_size = number
-				flavor_name = string
-				create_key_pair_name = string
-				private_network_name = string
-				external_network_name = string
-				security_group_name = optional(string,null)
-				create_security_group_name = optional(string,null)
-				create_security_group_rules = optional(list(object({
-					direction = optional(string,null)
-					ethertype = optional(string,null)
-					protocol = optional(string,null)
-					port_range_min = optional(string,null)
-					port_range_max = optional(string,null)
-					remote_ip_prefix = optional(string,null)
-				})),null)
-				user_data_file_path = optional(string,null)
-				additional_volumes = optional(list(number),[])
-			})
-		})
-	}
+	   type  =  object({
+	      provider = object({
+	         auth_url = string
+	         application_credential_name = string
+	         application_credential_id = string
+			 application_credential_secret = string
+			 region = string
+		  })
+		  vm_info = object({
+		     vm_name = string
+		     OS_name = string
+			 OS_boot_size = number
+			 flavor_name = string
+			 create_key_pair_name = string
+			 private_network_name = string
+			 external_network_name = string
+			 security_group_name = optional(string,null)
+			 create_security_group_name = optional(string,null)
+			 create_security_group_rules = optional(list(object({
+			    direction = optional(string,null)
+				ethertype = optional(string,null)
+				protocol = optional(string,null)
+				port_range_min = optional(string,null)
+				port_range_max = optional(string,null)
+				remote_ip_prefix = optional(string,null)
+			 })),null)
+			 user_data_file_path = optional(string,null)
+			 additional_volumes = optional(list(number),[])
+	      })
+       })
+  }
 
 	#create_instance
 	module  "create_nhn_instance" {
-		source  =  "git::https://github.com/ZConverter-samples/terraform-openstack-create-instnace-modules.git"
-		region  =  var.terraform_data.provider.region
-		vm_name  =  var.terraform_data.vm_info.vm_name
-		OS_name  =  var.terraform_data.vm_info.OS_name
-		OS_boot_size  =  var.terraform_data.vm_info.OS_boot_size
-		flavor_name  =  var.terraform_data.vm_info.flavor_name
-		create_key_pair_name  =  var.terraform_data.vm_info.create_key_pair_name
-		private_network_name  =  var.terraform_data.vm_info.private_network_name
-		external_network_name  =  var.terraform_data.vm_info.external_network_name
-		security_group_name  =  null
-		create_security_group_name  =  var.terraform_data.vm_info.create_security_group_name
-		create_security_group_rules  =  var.terraform_data.vm_info.create_security_group_rules
-		user_data_file_path  =  var.terraform_data.vm_info.user_data_file_path
-		volume  =  var.terraform_data.vm_info.additional_volumes
+	   source  =  "git::https://github.com/ZConverter-samples/terraform-openstack-create-instnace-modules.git"
+	   region  =  var.terraform_data.provider.region
+	   vm_name  =  var.terraform_data.vm_info.vm_name
+	   OS_name  =  var.terraform_data.vm_info.OS_name
+	   OS_boot_size  =  var.terraform_data.vm_info.OS_boot_size
+	   flavor_name  =  var.terraform_data.vm_info.flavor_name
+	   create_key_pair_name  =  var.terraform_data.vm_info.create_key_pair_name
+	   private_network_name  =  var.terraform_data.vm_info.private_network_name
+	   external_network_name  =  var.terraform_data.vm_info.external_network_name
+	   security_group_name  =  null
+	   create_security_group_name  =  var.terraform_data.vm_info.create_security_group_name
+	   create_security_group_rules  =  var.terraform_data.vm_info.create_security_group_rules
+	   user_data_file_path  =  var.terraform_data.vm_info.user_data_file_path
+	   volume  =  var.terraform_data.vm_info.additional_volumes
 	}
    ```
 * After creating the nhn_terraform.json file to enter the user's value, you must enter the contents below. 
