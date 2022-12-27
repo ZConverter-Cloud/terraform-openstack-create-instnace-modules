@@ -81,7 +81,7 @@ Prepare your environment for authenticating and running your Terraform scripts. 
    * **application_credential_secret**
 	   - The secret of an application credential to authenticate with.
    
-	![Account User](https://raw.githubusercontent.com/ZConverter-samples/terraform-openstack-create-instnace-modules/master/images/credential_info.png)
+![Account User](https://raw.githubusercontent.com/ZConverter-samples/terraform-openstack-create-instnace-modules/master/images/credential_info.png)
 
 ##  Start Terraform
 
