@@ -29,6 +29,7 @@ variable "OS_name" {
 
 variable "OS_boot_size" {
   type = number
+  default = 20
 }
 
 variable "flavor_name" {
