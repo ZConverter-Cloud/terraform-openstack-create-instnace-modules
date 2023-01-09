@@ -13,6 +13,7 @@ locals {
 
 variable "cloud_platform" {
   type = string
+  default = null
 }
 
 variable "region" {
