@@ -13,6 +13,6 @@ resource "openstack_blockstorage_volume_v3" "add_volume" {
 
 resource "openstack_compute_volume_attach_v2" "volume_attach" {
   count       = length(var.volume)
-  instance_id = openstack_compute_instance_v2.kakao_create_instance.id
+  instance_id = openstack_compute_instance_v2.openstack_create_instance.id
   volume_id   = openstack_blockstorage_volume_v3.add_volume[count.index].id
 }
