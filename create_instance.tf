@@ -10,7 +10,7 @@ resource "openstack_compute_keypair_v2" "create_key_pair" {
   public_key = tls_private_key.key[0].public_key_openssh
 }
 
-resource "openstack_compute_instance_v2" "kakao_create_instance" {
+resource "openstack_compute_instance_v2" "openstack_create_instance" {
   name              = var.vm_name
   region            = var.region
   image_id          = data.openstack_images_image_ids_v2.get_image.ids[0]
