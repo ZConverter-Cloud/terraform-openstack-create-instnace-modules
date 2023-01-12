@@ -23,3 +23,7 @@ resource "openstack_networking_secgroup_rule_v2" "secgroup_rule" {
   remote_ip_prefix = var.create_security_group_rules[count.index].remote_ip_prefix
   security_group_id = var.create_security_group_name != null ? openstack_networking_secgroup_v2.create_security_group[0].id : data.openstack_networking_secgroup_v2.get_security_group_id[0].id
 }
+
+output "floating_ip" {
+  value = openstack_compute_floatingip_v2.floatingip.address
+}
