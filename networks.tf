@@ -4,7 +4,7 @@ resource "openstack_compute_floatingip_v2" "floatingip" {
 
 resource "openstack_compute_floatingip_associate_v2" "floatingip_associate" {
   floating_ip = openstack_compute_floatingip_v2.floatingip.address
-  instance_id = openstack_compute_instance_v2.kakao_create_instance.id
+  instance_id = openstack_compute_instance_v2.openstack_create_instance.id
 }
 
 resource "openstack_networking_secgroup_v2" "create_security_group" {
