@@ -140,7 +140,7 @@ Prepare your environment for authenticating and running your Terraform scripts. 
 
 	#create_instance
 	module  "create_openstack_instance" {
-	   source  =  "git::https://github.com/ZConverter-samples/terraform-openstack-create-instnace-modules.git"
+	   source  =  "git::https://github.com/ZConverter-Cloud/terraform-openstack-create-instnace-modules.git"
 	   region  =  var.terraform_data.provider.region
 	   vm_name  =  var.terraform_data.vm_info.vm_name
 	   OS_name  =  var.terraform_data.vm_info.OS_name
@@ -208,12 +208,12 @@ Prepare your environment for authenticating and running your Terraform scripts. 
 | terraform_data.vm_info.external_network_name | string | yes | none | The name of the Public Network you want to use.|
 | terraform_data.vm_info.create_security_group_name | string | no | none | The name of the Security-Group to create.|
 | terraform_data.vm_info.create_security_group_rules | list | no | none |	When you need to create ingress and egress rules.|
-| terraform_data.vm_info.create_security_group_rules.[*].direction | stirng | conditional | none | Either "ingress" or "egress"|
-| terraform_data.vm_info.create_security_group_rules.[*].ethertype | string | conditional | none | Either "IPv4" or "IPv6" |
+| terraform_data.vm_info.create_security_group_rules.[*].direction | stirng | conditional | none | Either `ingress` or `egress`|
+| terraform_data.vm_info.create_security_group_rules.[*].ethertype | string | conditional | none | Either `IPv4` or `IPv6` |
 | terraform_data.vm_info.create_security_group_rules.[*].protocol | string | conditional | none | Enter a supported protocol name |
-| terraform_data.vm_info.create_security_group_rules.[*].port_range_min | string | conditional | none | Minimum Port Range (Use only when using udp, tcp protocol) |
-| terraform_data.vm_info.create_security_group_rules.[*].port_range_max | string | conditional | none | Maximum Port Range (Use only when using udp, tcp protocol) |
-| terraform_data.vm_info.create_security_group_rules.[*].remote_ip_prefix | string | conditional | none | CIDR (ex : 0.0.0.0/0) |
+| terraform_data.vm_info.create_security_group_rules.[*].port_range_min | string | conditional | none | Minimum Port Range (Use only when using `udp`, `tcp` protocol) |
+| terraform_data.vm_info.create_security_group_rules.[*].port_range_max | string | conditional | none | Maximum Port Range (Use only when using `udp`, `tcp` protocol) |
+| terraform_data.vm_info.create_security_group_rules.[*].remote_ip_prefix | string | conditional | none | CIDR (ex : `0.0.0.0/0`) |
 | terraform_data.vm_info.ssh_public_key | string | conditional | none | ssh public key to use when using Linux-based OS. (Use only one of the following: ssh_public_key, ssh_public_key_file_path) |
 | terraform_data.vm_info.ssh_public_key_file | string | conditional | none | Absolute path of ssh public key file to use when using Linux-based OS. (Use only one of the following: ssh_public_key, ssh_public_key_file_path) |
 | terraform_data.vm_info.user_data_file_path | string | conditional | none | Absolute path of user data file path to use when cloud-init. |
