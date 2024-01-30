@@ -83,77 +83,100 @@ Prepare your environment for authenticating and running your Terraform scripts. 
 * To use terraform, you must have a terraform file of command written and a terraform executable.
 * You should create a folder to use terraform, create a `terraform.tf` file, and enter the contents below.
 	```
-	#Define required providers
+	// Terraform block
+	//
+	// Set to support terraform 1.3.0 or later
+	// provider is fixed at openstack's 1.48.0
 	terraform {
-       required_version  =  ">= 1.3.0"
-	   required_providers {
-	      openstack  =  {
-	         source = "terraform-provider-openstack/openstack"
-			 version = "1.48.0"
-          }
-	   }
+		required_version  =  ">= 1.3.0"
+		required_providers {
+			openstack  =  {
+				source = "terraform-provider-openstack/openstack"
+				version = "1.48.0"
+			}
+		}
 	}
 
-	#Configure the OpenStack Provider
+	// Authentication information of openstack
+	//
+	// Applying input information received through a variable called terraform_data
 	provider  "openstack" {
-	   user_name  = var.terraform_data.provider.user_name
-	   auth_url  = var.terraform_data.provider.auth_url
-	   application_credential_name  = var.terraform_data.provider.application_credential_name
-	   application_credential_id  = var.terraform_data.provider.application_credential_id
-	   application_credential_secret  = var.terraform_data.provider.application_credential_secret
-	   region  = var.terraform_data.provider.region
+		auth_url  = var.terraform_data.provider.auth_url
+		application_credential_name  = var.terraform_data.provider.application_credential_name
+		application_credential_id  = var.terraform_data.provider.application_credential_id
+		application_credential_secret  = var.terraform_data.provider.application_credential_secret
+		region  = var.terraform_data.provider.region
 	}
-	
-	#variable
-	variable  "terraform_data" {
-	   type  =  object({
-	      provider = object({
-	         auth_url = string
-	         application_credential_name = string
-	         application_credential_id = string
-			 application_credential_secret = string
-			 region = string
-		  })
-		  vm_info = object({
-		     vm_name = string
-		     OS_name = string
-			 OS_boot_size = number
-			 flavor_name = string
-			 create_key_pair_name = string
-			 private_network_name = string
-			 external_network_name = string
-			 security_group_name = optional(string,null)
-			 create_security_group_name = optional(string,null)
-			 create_security_group_rules = optional(list(object({
-			    direction = optional(string,null)
-				ethertype = optional(string,null)
-				protocol = optional(string,null)
-				port_range_min = optional(string,null)
-				port_range_max = optional(string,null)
-				remote_ip_prefix = optional(string,null)
-			 })),null)
-			 user_data_file_path = optional(string,null)
-			 additional_volumes = optional(list(number),[])
-	      })
-       })
-  }
 
-	#create_instance
+	// The terraform_data variable uses the data entered by the user.
+	//
+	// It is composed of the provider's authentication information input box
+	//
+	// and the VM information input box using the object type. 
+	//
+	// Since there is a lot of data, it is recommended to write the data to be entered
+	//
+	// as JSON in advance and apply it using -var-file.
+	variable  "terraform_data" {
+		type  =  object({
+			provider = object({
+				auth_url = string
+				application_credential_name = string
+				application_credential_id = string
+				application_credential_secret = string
+				region = string
+			})
+			vm_info = object({
+				vm_name = string
+				OS_name = string
+				OS_boot_size = number
+				flavor_name = string
+				key_pair_name = string
+				private_network_name = string
+				external_network_name = string
+				security_group_name = optional(string,null)
+				create_security_group_name = optional(string,null)
+				create_security_group_rules = optional(list(object({
+					direction = optional(string,null)
+					ethertype = optional(string,null)
+					protocol = optional(string,null)
+					port_range_min = optional(string,null)
+					port_range_max = optional(string,null)
+					remote_ip_prefix = optional(string,null)
+				})),null)
+				user_data_file_path = optional(string,null)
+				additional_volumes = optional(list(number),[])
+			})
+		})
+	}
+
+	// Utilize the module and use the association format code stored in the GitHub.
+	//
+	// Start creating an instance by designating the data entered
+	//
+	// as the terraform_data variable as the variable in the module.
 	module  "create_openstack_instance" {
-	   source  =  "git::https://github.com/ZConverter-Cloud/terraform-openstack-create-instnace-modules.git"
-	   region  =  var.terraform_data.provider.region
-	   vm_name  =  var.terraform_data.vm_info.vm_name
-	   OS_name  =  var.terraform_data.vm_info.OS_name
-	   OS_boot_size  =  var.terraform_data.vm_info.OS_boot_size
-	   flavor_name  =  var.terraform_data.vm_info.flavor_name
-	   create_key_pair_name  =  var.terraform_data.vm_info.create_key_pair_name
-	   private_network_name  =  var.terraform_data.vm_info.private_network_name
-	   external_network_name  =  var.terraform_data.vm_info.external_network_name
-	   security_group_name  =  null
-	   create_security_group_name  =  var.terraform_data.vm_info.create_security_group_name
-	   create_security_group_rules  =  var.terraform_data.vm_info.create_security_group_rules
-	   user_data_file_path  =  var.terraform_data.vm_info.user_data_file_path
-	   volume  =  var.terraform_data.vm_info.additional_volumes
+		source  =  "git::https://github.com/ZConverter-Cloud/terraform-openstack-create-instance-modules.git"
+		region  =  var.terraform_data.provider.region
+		vm_name  =  var.terraform_data.vm_info.vm_name
+		OS_name  =  var.terraform_data.vm_info.OS_name
+		OS_boot_size  =  var.terraform_data.vm_info.OS_boot_size
+		flavor_name  =  var.terraform_data.vm_info.flavor_name
+		key_pair_name  =  var.terraform_data.vm_info.key_pair_name
+		private_network_name  =  var.terraform_data.vm_info.private_network_name
+		external_network_name  =  var.terraform_data.vm_info.external_network_name
+		security_group_name  =  var.terraform_data.vm_info.security_group_name
+		create_security_group_name  =  var.terraform_data.vm_info.create_security_group_name
+		create_security_group_rules  =  var.terraform_data.vm_info.create_security_group_rules
+		user_data_file_path  =  var.terraform_data.vm_info.user_data_file_path
+		volume  =  var.terraform_data.vm_info.additional_volumes
+	}
+
+	// After the module creates an instance,
+	//
+	// it outputs the information of the instance.
+	output "result" {
+		value = module.create_openstack_instance.result
 	}
    ```
 * After creating the openstack_terraform.json file to enter the user's value, you must enter the contents below. 
@@ -174,7 +197,7 @@ Prepare your environment for authenticating and running your Terraform scripts. 
 				"OS_name" : "centos7",
 				"OS_boot_size" : 20,
 				"flavor_name" : "m1.medium",
-				"create_key_pair_name" : "terraform",
+				"key_pair_name" : "terraform",
 				"private_network_name" : "private_network",
 				"external_network_name" : "external_network",
 				"create_security_group_name" : "sg_list",
@@ -204,8 +227,10 @@ Prepare your environment for authenticating and running your Terraform scripts. 
 | terraform_data.vm_info.OS_name | string | yes | none |The name of the OS you uploaded.|
 | terraform_data.vm_info.OS_boot_size | number | no | none |Boot volume size of the instance you want to create.|
 | terraform_data.vm_info.flavor_name| string | yes | none |Flavor types defined in your open stack.|
+| terraform_data.vm_info.key_pair_name| string | yes | none |Already registered key_pair name|
 | terraform_data.vm_info.private_network_name | string | yes | none | The name of the Private Network you want to use.|
 | terraform_data.vm_info.external_network_name | string | yes | none | The name of the Public Network you want to use.|
+| terraform_data.vm_info.security_group_name | string | no | none | Name of the security-group you want to use among existing ones.|
 | terraform_data.vm_info.create_security_group_name | string | no | none | The name of the Security-Group to create.|
 | terraform_data.vm_info.create_security_group_rules | list | no | none |	When you need to create ingress and egress rules.|
 | terraform_data.vm_info.create_security_group_rules.[*].direction | stirng | conditional | none | Either `ingress` or `egress`|
