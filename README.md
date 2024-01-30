@@ -65,7 +65,7 @@ Prepare your environment for authenticating and running your Terraform scripts. 
       Example: `Terraform v1.3.3 on linux_amd64`.
 
 ### Get API-Key
-   We need the provider information below to use the nhn terraform.
+   We need the provider information below to use the openstack terraform.
    * **auth_url**
 	   - The Identity authentication URL.
    * **region**
@@ -76,8 +76,7 @@ Prepare your environment for authenticating and running your Terraform scripts. 
 	   - The name of an application credential to authenticate with.
    * **application_credential_secret**
 	   - The secret of an application credential to authenticate with.
-   
-	![Account User](https://raw.githubusercontent.com/ZConverter-samples/terraform-openstack-create-instnace-modules/master/images/credential_info.png)
+	![Account User](/images/credential_info.png)
 
 ##  Start Terraform
 
@@ -140,7 +139,7 @@ Prepare your environment for authenticating and running your Terraform scripts. 
   }
 
 	#create_instance
-	module  "create_nhn_instance" {
+	module  "create_openstack_instance" {
 	   source  =  "git::https://github.com/ZConverter-samples/terraform-openstack-create-instnace-modules.git"
 	   region  =  var.terraform_data.provider.region
 	   vm_name  =  var.terraform_data.vm_info.vm_name
@@ -157,7 +156,7 @@ Prepare your environment for authenticating and running your Terraform scripts. 
 	   volume  =  var.terraform_data.vm_info.additional_volumes
 	}
    ```
-* After creating the nhn_terraform.json file to enter the user's value, you must enter the contents below. 
+* After creating the openstack_terraform.json file to enter the user's value, you must enter the contents below. 
 * ***The openstack_terraform.json below is an example of a required value only. See below the Attributes table for a complete example.***
 * ***There is an attribute table for input values under the script, so you must refer to it.***
 	```
@@ -233,7 +232,7 @@ Prepare your environment for authenticating and running your Terraform scripts. 
   * Comparing the current configuration to the prior state and noting any differences.
   * Proposing a set of change actions that should, if applied, make the remote objects match the configuration.
    ```
-   terraform plan -var-file=<Absolute path of nhn_terraform.json>
+   terraform plan -var-file=<Absolute path of openstack_terraform.json>
    ```
   * **Note**
 	* -var-file : When you use a var-file Sets values for potentially many [input variables](https://www.terraform.io/docs/language/values/variables.html) declared in the root module of the configuration, using definitions from a ["tfvars" file](https://www.terraform.io/docs/language/values/variables.html#variable-definitions-tfvars-files). Use this option multiple times to include values from more than one file.
@@ -241,7 +240,7 @@ Prepare your environment for authenticating and running your Terraform scripts. 
 
 * **Executes the actions proposed in a Terraform plan.**
    ```
-   terraform apply -var-file=<Absolute path of nhn_terraform.json> -auto-approve
+   terraform apply -var-file=<Absolute path of openstack_terraform.json> -auto-approve
    ```
 * **Note**
 	* -auto-approve : Skips interactive approval of plan before applying. This option is ignored when you pass a previously-saved plan file, because Terraform considers you passing the plan file as the approval and so will never prompt in that case.
