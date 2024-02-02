@@ -8,7 +8,7 @@
 
 ## Before You Begin
 To successfully perform this tutorial, you must have the following:
-
+   * You need to install [git](https://git-scm.com/downloads) in advance to use it.
    * [openstack install guide](https://docs.openstack.org/install-guide/)
 	   * When installing, make sure to install the Identity as v3.
 
